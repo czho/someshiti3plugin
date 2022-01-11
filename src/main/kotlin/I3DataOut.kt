@@ -44,12 +44,13 @@ internal object I3DataOut: PluginModule(
             if (fps) line += "f: " + Minecraft.getDebugFPS().toString() + " | "
             if (ping) line += "p: " + InfoCalculator.ping().toString() + "ms | "
             if (serverbrand) line += (mc.player?.serverBrand ?: "Unknown Server Type") + " | "
-            if (tps) line += "t: " + TpsCalculator.tickRate.toString() + " | "
+            if (tps) line += "t: " + MathUtils.round(TpsCalculator.tickRate,3) + " | "
             if (direction) line += Direction.fromEntity(mc.renderViewEntity ?: player).displayNameXY + " | "
-            if (playerspeed) line += "s: " + player.realSpeed.toString() + " | "
+            if (playerspeed) line += "s: " + MathUtils.round(player.realSpeed * 3.6, 2) + "km/h | "
             if (pitch) line += "p: " + MathUtils.round(RotationUtils.normalizeAngle(mc.player?.rotationYaw ?: 0.0f), 1).toString() + " | "
             if (yaw) line += "y: " + MathUtils.round(mc.player?.rotationPitch ?: 0.0f, 1).toString() + " | "
-            if (coordinates) line += (mc.renderViewEntity ?: player).position.toString()
+            val coords = (mc.renderViewEntity ?: player).position
+            if (coordinates) line += "x=${coords.x}, y=${coords.y}, z=${coords.z}"
 
             File(System.getProperty("user.home") + File.separator + "i3data").writeText(line)
         }
